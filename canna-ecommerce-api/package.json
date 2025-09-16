@@ -1,0 +1,31 @@
+{
+  "name": "canna-ecommerce-api",
+  "version": "1.0.0",
+  "description": "API REST para e-commerce de cannabis - Entrega #1 Coderhouse",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "seed": "node scripts/seed.js",
+    "reseed": "node scripts/seed.js --force"
+  },
+  "keywords": [
+    "cannabis",
+    "ecommerce",
+    "api",
+    "rest",
+    "coderhouse"
+  ],
+  "author": "Tu Nombre",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

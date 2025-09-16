@@ -1,0 +1,169 @@
+[
+  {
+    "id": "477d57d9-3006-4f6c-98f2-28e01b564a4a",
+    "title": "OG Kush Premium",
+    "description": "Flor indoor curada 3 semanas, aroma terroso y cítrico. Variedad híbrida con efectos relajantes.",
+    "code": "OGK-001",
+    "price": 4500,
+    "stock": 25,
+    "category": "flowers",
+    "status": true,
+    "thumbnails": [
+      "https://example.com/ogkush1.jpg",
+      "https://example.com/ogkush2.jpg"
+    ],
+    "specs": {
+      "strain": "OG Kush",
+      "thc": 22,
+      "cbd": 0.3,
+      "aroma": "cítrico",
+      "weight": 3.5
+    },
+    "createdAt": "2025-08-20T23:50:05.712Z",
+    "updatedAt": "2025-08-20T23:50:05.713Z"
+  },
+  {
+    "id": "25824ca2-74c0-4fa5-b62c-7ddd9d41711c",
+    "title": "Wax Lemon Haze",
+    "description": "Extracto de calidad premium, extracción por BHO de la variedad Lemon Haze",
+    "code": "WLH-001",
+    "price": 8500,
+    "stock": 15,
+    "category": "extracts",
+    "status": true,
+    "thumbnails": [
+      "https://example.com/wax1.jpg"
+    ],
+    "specs": {
+      "type": "BHO",
+      "thc": 85,
+      "cbd": 1.2,
+      "quantity": 1
+    },
+    "createdAt": "2025-08-20T23:50:05.713Z",
+    "updatedAt": "2025-08-20T23:50:05.713Z"
+  },
+  {
+    "id": "cfa9a41f-f636-4dc5-81a7-fc822a30f966",
+    "title": "Brownie THC 50mg",
+    "description": "Brownie de chocolate artesanal infusionado con 50mg de THC. Ideal para usuarios experimentados.",
+    "code": "BRW-050",
+    "price": 1200,
+    "stock": 30,
+    "category": "edibles",
+    "status": true,
+    "thumbnails": [
+      "https://example.com/brownie1.jpg"
+    ],
+    "specs": {
+      "format": "brownie",
+      "thcMg": 50,
+      "units": 1
+    },
+    "createdAt": "2025-08-20T23:50:05.713Z",
+    "updatedAt": "2025-08-20T23:50:05.713Z"
+  },
+  {
+    "id": "b4a7174d-170e-487b-8f70-638ab5439f42",
+    "title": "Grinder Metálico 4 Partes",
+    "description": "Grinder de aluminio anodizado de 4 partes con malla fina para recolección de tricomas",
+    "code": "GRD-ALU-4",
+    "price": 2800,
+    "stock": 50,
+    "category": "accessories",
+    "status": true,
+    "thumbnails": [
+      "https://example.com/grinder1.jpg"
+    ],
+    "specs": {
+      "type": "grinder",
+      "material": "aluminio",
+      "compatibility": "universal"
+    },
+    "createdAt": "2025-08-20T23:50:05.713Z",
+    "updatedAt": "2025-08-20T23:50:05.713Z"
+  },
+  {
+    "id": "26440366-7049-4341-a21f-afab7feb811d",
+    "title": "White Widow Indoor",
+    "description": "Flor de interior de la legendaria White Widow, conocida por su potencia y cristales blancos",
+    "code": "WW-IND-001",
+    "price": 5200,
+    "stock": 18,
+    "category": "flowers",
+    "status": true,
+    "thumbnails": [
+      "https://example.com/whitewidow1.jpg"
+    ],
+    "specs": {
+      "strain": "White Widow",
+      "thc": 25,
+      "cbd": 0.8,
+      "aroma": "dulce",
+      "weight": 3.5
+    },
+    "createdAt": "2025-08-20T23:50:05.713Z",
+    "updatedAt": "2025-08-20T23:50:05.713Z"
+  },
+  {
+    "id": "49bf0540-6b7d-45c7-a231-c9aeec385e98",
+    "title": "Aceite CBD Full Spectrum",
+    "description": "Aceite de CBD de espectro completo, ideal para uso medicinal y relajación",
+    "code": "CBD-FS-30",
+    "price": 6800,
+    "stock": 22,
+    "category": "extracts",
+    "status": true,
+    "thumbnails": [
+      "https://example.com/cbdoil1.jpg"
+    ],
+    "specs": {
+      "type": "aceite",
+      "thc": 0.3,
+      "cbd": 30,
+      "quantity": 30
+    },
+    "createdAt": "2025-08-20T23:50:05.713Z",
+    "updatedAt": "2025-08-20T23:50:05.713Z"
+  },
+  {
+    "id": "39f92c93-2974-4abd-a477-8ac9406ab548",
+    "title": "Gummies de Frutas 10mg",
+    "description": "Gomitas de frutas sabor mixto, cada una con 10mg de THC. Presentación de 10 unidades.",
+    "code": "GUM-FRT-10",
+    "price": 3500,
+    "stock": 40,
+    "category": "edibles",
+    "status": true,
+    "thumbnails": [
+      "https://example.com/gummies1.jpg"
+    ],
+    "specs": {
+      "format": "gummies",
+      "thcMg": 10,
+      "units": 10
+    },
+    "createdAt": "2025-08-20T23:50:05.713Z",
+    "updatedAt": "2025-08-20T23:50:05.713Z"
+  },
+  {
+    "id": "6f4583e8-d430-430a-bf71-b996921a6ab2",
+    "title": "Pipa de Cristal Borosilicato",
+    "description": "Pipa artesanal de cristal borosilicato resistente al calor, diseño elegante",
+    "code": "PIP-CRI-BOR",
+    "price": 3200,
+    "stock": 12,
+    "category": "accessories",
+    "status": true,
+    "thumbnails": [
+      "https://example.com/pipe1.jpg"
+    ],
+    "specs": {
+      "type": "pipe",
+      "material": "borosilicato",
+      "compatibility": "flores"
+    },
+    "createdAt": "2025-08-20T23:50:05.713Z",
+    "updatedAt": "2025-08-20T23:50:05.713Z"
+  }
+]

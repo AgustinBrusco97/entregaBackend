@@ -1,0 +1,44 @@
+<section class="hero">
+  <h1>Productos en tiempo real</h1>
+  <p class="muted">Creá y eliminá productos, la grilla se actualiza sola</p>
+</section>
+
+<div class="toolbar">
+  <span class="chip">Conectados: <strong id="online">0</strong></span>
+</div>
+
+<div class="rt-layout">
+  <section class="grid-wrap">
+    <div id="rt-grid" class="product-grid"></div>
+  </section>
+
+  <aside class="side">
+    <h3>Crear producto</h3>
+    <form id="ws-create-form" class="card form">
+      <input name="title" placeholder="Título" required />
+      <input name="description" placeholder="Descripción" required />
+      <input name="code" placeholder="Código (único)" required />
+      <input name="price" type="number" placeholder="Precio" required />
+      <input name="stock" type="number" placeholder="Stock" required />
+      <select name="category" required>
+        <option value="" disabled selected>Categoría</option>
+        <option value="flowers">flowers</option>
+        <option value="extracts">extracts</option>
+        <option value="edibles">edibles</option>
+        <option value="accessories">accessories</option>
+      </select>
+      <textarea name="specs" rows="3" placeholder='{"thcMg":10,"units":1}'></textarea>
+      <input name="thumbnails" placeholder="Thumbnails (URLs separadas por coma)" />
+      <button type="submit">Crear</button>
+    </form>
+
+    <h3>Eliminar producto</h3>
+    <form id="ws-delete-form" class="card form">
+      <input name="id" placeholder="ID del producto" required />
+      <button type="submit" class="danger">Eliminar</button>
+    </form>
+  </aside>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/realtime.js"></script>

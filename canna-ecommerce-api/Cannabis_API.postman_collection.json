@@ -1,0 +1,477 @@
+{
+  "info": {
+    "name": "Cannabis E-commerce API",
+    "description": "Colección completa de endpoints para la API de e-commerce de cannabis - Coderhouse Entrega #1",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "1.0.0"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "productId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "cartId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/health",
+          "host": ["{{baseUrl}}"],
+          "path": ["health"]
+        }
+      }
+    },
+    {
+      "name": "Products",
+      "item": [
+        {
+          "name": "Get All Products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/products",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "products"]
+            }
+          }
+        },
+        {
+          "name": "Get Products with Filters",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/products?category=flowers&limit=5&page=1&sort=price&order=asc",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "products"],
+              "query": [
+                {
+                  "key": "category",
+                  "value": "flowers"
+                },
+                {
+                  "key": "limit",
+                  "value": "5"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "sort",
+                  "value": "price"
+                },
+                {
+                  "key": "order",
+                  "value": "asc"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Search Products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/products?query=kush&minPrice=1000&maxPrice=5000",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "products"],
+              "query": [
+                {
+                  "key": "query",
+                  "value": "kush"
+                },
+                {
+                  "key": "minPrice",
+                  "value": "1000"
+                },
+                {
+                  "key": "maxPrice",
+                  "value": "5000"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Product by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/products/{{productId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "products", "{{productId}}"]
+            }
+          }
+        },
+        {
+          "name": "Create Flower Product",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('productId', response.payload.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Purple Haze Premium\",\n  \"description\": \"Flor de interior de la icónica Purple Haze, con hermosos tonos púrpuras y aroma dulce\",\n  \"code\": \"PH-001\",\n  \"price\": 5500,\n  \"stock\": 20,\n  \"category\": \"flowers\",\n  \"status\": true,\n  \"thumbnails\": [\"https://example.com/purple1.jpg\"],\n  \"specs\": {\n    \"strain\": \"Purple Haze\",\n    \"thc\": 20,\n    \"cbd\": 0.5,\n    \"aroma\": \"dulce\",\n    \"weight\": 3.5\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/products",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "products"]
+            }
+          }
+        },
+        {
+          "name": "Create Extract Product",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Rosin Live Resin\",\n  \"description\": \"Extracto premium mediante prensado en calor, conserva todos los terpenos\",\n  \"code\": \"RLR-001\",\n  \"price\": 12000,\n  \"stock\": 8,\n  \"category\": \"extracts\",\n  \"status\": true,\n  \"specs\": {\n    \"type\": \"rosin\",\n    \"thc\": 78,\n    \"cbd\": 2.1,\n    \"quantity\": 1\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/products",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "products"]
+            }
+          }
+        },
+        {
+          "name": "Create Edible Product",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Chocolates THC 25mg\",\n  \"description\": \"Chocolates artesanales con 25mg de THC cada uno, sabor cacao 70%\",\n  \"code\": \"CHO-025\",\n  \"price\": 2800,\n  \"stock\": 50,\n  \"category\": \"edibles\",\n  \"status\": true,\n  \"specs\": {\n    \"format\": \"chocolate\",\n    \"thcMg\": 25,\n    \"units\": 4\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/products",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "products"]
+            }
+          }
+        },
+        {
+          "name": "Create Accessory Product",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Vaporizador Portátil\",\n  \"description\": \"Vaporizador de hierbas secas, temperatura ajustable, batería recargable\",\n  \"code\": \"VAP-PORT-001\",\n  \"price\": 15000,\n  \"stock\": 12,\n  \"category\": \"accessories\",\n  \"status\": true,\n  \"specs\": {\n    \"type\": \"vaporizer\",\n    \"material\": \"aluminio\",\n    \"compatibility\": \"hierbas secas\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/products",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "products"]
+            }
+          }
+        },
+        {
+          "name": "Update Product",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"price\": 6000,\n  \"stock\": 15,\n  \"description\": \"Flor de interior de la icónica Purple Haze - PRECIO ACTUALIZADO\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/products/{{productId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "products", "{{productId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Product",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/products/{{productId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "products", "{{productId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Carts",
+      "item": [
+        {
+          "name": "Create Cart",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('cartId', response.payload.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/carts",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "carts"]
+            }
+          }
+        },
+        {
+          "name": "Get Cart by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/carts/{{cartId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "carts", "{{cartId}}"]
+            }
+          }
+        },
+        {
+          "name": "Add Product to Cart",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/carts/{{cartId}}/product/{{productId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "carts", "{{cartId}}", "product", "{{productId}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Product Quantity in Cart",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quantity\": 3\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/carts/{{cartId}}/product/{{productId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "carts", "{{cartId}}", "product", "{{productId}}"]
+            }
+          }
+        },
+        {
+          "name": "Remove Product from Cart",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/carts/{{cartId}}/product/{{productId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "carts", "{{cartId}}", "product", "{{productId}}"]
+            }
+          }
+        },
+        {
+          "name": "Clear Cart",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/carts/{{cartId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "carts", "{{cartId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Complete Workflow Example",
+      "item": [
+        {
+          "name": "1. Create Multiple Products",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Jack Herer Sativa\",\n  \"description\": \"Cepa sativa energizante, perfecta para el día\",\n  \"code\": \"JH-SAT-001\",\n  \"price\": 4800,\n  \"stock\": 30,\n  \"category\": \"flowers\",\n  \"status\": true,\n  \"specs\": {\n    \"strain\": \"Jack Herer\",\n    \"thc\": 18,\n    \"cbd\": 0.7,\n    \"aroma\": \"pino\",\n    \"weight\": 3.5\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/products",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "products"]
+            }
+          }
+        },
+        {
+          "name": "2. Get Products with Pagination",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/products?limit=3&page=1&sort=price&order=desc",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "products"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "3"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "sort",
+                  "value": "price"
+                },
+                {
+                  "key": "order",
+                  "value": "desc"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "3. Create New Cart",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('cartId', response.payload.id);",
+                  "    console.log('Cart ID saved: ' + response.payload.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/carts",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "carts"]
+            }
+          }
+        },
+        {
+          "name": "4. Add Products to Cart (Manual IDs)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/carts/{{cartId}}/product/REPLACE_WITH_PRODUCT_ID",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "carts", "{{cartId}}", "product", "REPLACE_WITH_PRODUCT_ID"]
+            }
+          }
+        },
+        {
+          "name": "5. View Cart with Products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/carts/{{cartId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "carts", "{{cartId}}"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
+

@@ -1,0 +1,17 @@
+[
+  {
+    "id": "18ecffef-974a-49b3-8c55-3fcee280bb99",
+    "products": [
+      {
+        "product": "25824ca2-74c0-4fa5-b62c-7ddd9d41711c",
+        "quantity": 4
+      },
+      {
+        "product": "cfa9a41f-f636-4dc5-81a7-fc822a30f966",
+        "quantity": 6
+      }
+    ],
+    "createdAt": "2025-08-21T00:17:34.351Z",
+    "updatedAt": "2025-08-21T00:37:16.362Z"
+  }
+]

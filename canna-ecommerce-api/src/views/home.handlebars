@@ -1,0 +1,45 @@
+<section class="hero">
+  <h1>Catálogo</h1>
+  <p class="muted">Explorá nuestros productos</p>
+</section>
+
+<div class="toolbar">
+  <div class="chips" id="cat-filter">
+    <button class="chip active" data-cat="all">Todos</button>
+    <button class="chip" data-cat="flowers">Flowers</button>
+    <button class="chip" data-cat="extracts">Extracts</button>
+    <button class="chip" data-cat="edibles">Edibles</button>
+    <button class="chip" data-cat="accessories">Accessories</button>
+  </div>
+  <input id="search" class="search" placeholder="Buscar productos..." />
+</div>
+
+<section class="product-grid" id="catalog-grid">
+  {{#if products.length}}
+    {{#each products}}
+      <article class="card" data-title="{{title}}" data-category="{{category}}">
+        <div class="thumb">
+          {{#if thumbnails.[0]}}
+            <img src="{{thumbnails.[0]}}" alt="" onerror="this.outerHTML='<div class=&quot;placeholder&quot;>{{title.[0]}}</div>'">
+          {{else}}
+            <div class="placeholder">{{title.[0]}}</div>
+          {{/if}}
+          <span class="badge">{{category}}</span>
+        </div>
+        <div class="card-body">
+          <h3 class="title">{{title}}</h3>
+          <p class="desc">{{description}}</p>
+          <div class="meta">
+            <span class="price">${{price}}</span>
+            <span class="stock">Stock: {{stock}}</span>
+          </div>
+          <code class="sku">{{code}}</code>
+        </div>
+      </article>
+    {{/each}}
+  {{else}}
+    <p class="empty">No hay productos</p>
+  {{/if}}
+</section>
+
+<script src="/js/catalog.js"></script>

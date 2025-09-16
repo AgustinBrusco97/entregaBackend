@@ -1,0 +1,224 @@
+:root {
+  --bg: #0b1220;
+  --bg-2: #0f172a;
+  --card: #0f1b2d;
+  --card-2: #111d33;
+  --fg: #e5edf6;
+  --muted: #9db1c7;
+  --accent: #22c55e;
+  --accent-2: #38bdf8;
+  --danger: #ef4444;
+  --border: #1f2a40;
+  --shadow: 0 10px 30px rgba(0, 0, 0, .25);
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  color: var(--fg);
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background: linear-gradient(180deg, var(--bg), var(--bg-2));
+}
+
+/* Layout base */
+.container { max-width: 1200px; margin: 0 auto; padding: 24px; }
+
+.site-header {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; margin-bottom: 24px;
+}
+
+.brand { font-weight: 800; font-size: 24px; letter-spacing: .3px; }
+.brand span { color: var(--accent); }
+
+.nav { display: flex; gap: 10px; }
+.nav a {
+  color: var(--fg); text-decoration: none;
+  background: var(--card); border: 1px solid var(--border);
+  padding: 8px 12px; border-radius: 10px;
+}
+.nav a:hover { background: #0b1626; }
+
+a { color: var(--accent-2); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Secciones / títulos */
+.hero { margin: 8px 0 18px; }
+.hero h1 { margin: 0 0 6px; font-size: 28px; line-height: 1.1; letter-spacing: .2px; }
+.muted { color: var(--muted); }
+
+/* Toolbar filtros + buscador */
+.toolbar {
+  display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+  margin: 12px 0 18px;
+}
+.chips { display: flex; gap: 8px; flex-wrap: wrap; }
+.chip {
+  background: #0b1626; border: 1px solid var(--border); color: var(--fg);
+  padding: 8px 12px; border-radius: 999px; cursor: pointer;
+}
+.chip.active { background: rgba(56, 189, 248, .15); border-color: #1e3a8a; }
+.search { margin-left: auto; min-width: 220px; }
+
+/* Grilla de productos */
+.product-grid {
+  display: grid; gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+/* Tarjeta de producto */
+.card {
+  background: linear-gradient(180deg, var(--card), var(--card-2));
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.thumb {
+  position: relative; aspect-ratio: 4 / 3; background: #0b1626;
+  display: flex; align-items: center; justify-content: center;
+}
+.thumb img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  font-size: 0; color: transparent;
+}
+.placeholder {
+  width: 64px; height: 64px; border-radius: 16px; background: #0b223a; color: #5fbaff;
+  display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 22px;
+}
+.badge {
+  position: absolute; left: 10px; top: 10px;
+  background: rgba(34, 197, 94, .12); color: #7ee1a2;
+  border: 1px solid rgba(34, 197, 94, .35);
+  padding: 4px 8px; border-radius: 999px; font-size: 12px; line-height: 1;
+}
+
+.card-body { padding: 14px; }
+.title { margin: 0 0 6px; font-size: 18px; line-height: 1.2; }
+.desc { margin: 0 0 10px; color: var(--muted); min-height: 40px; }
+
+.meta {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 8px;
+}
+.price {
+  font-weight: 800; font-size: 18px;
+  background: linear-gradient(90deg, #5eead4, #60a5fa);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.stock { color: #9ac6ff; }
+
+.sku {
+  display: inline-block; margin-top: 6px;
+  background: #0b1626; border: 1px dashed var(--border);
+  padding: 4px 6px; border-radius: 8px; color: #7aa0c6;
+}
+
+.actions { margin-top: 12px; display: flex; gap: 8px; }
+
+/* Formularios y controles */
+.form { display: grid; gap: 10px; padding: 14px; }
+
+input, select, textarea {
+  width: 100%; background: #0b1626; color: var(--fg);
+  border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; outline: none;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: var(--accent-2);
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, .2);
+}
+
+button {
+  appearance: none; border: 1px solid var(--border);
+  background: var(--accent); color: #052e16; font-weight: 700;
+  border-radius: 10px; padding: 10px 14px; cursor: pointer;
+  transition: transform .06s ease, opacity .15s ease;
+}
+button:hover { transform: translateY(-1px); opacity: .95; }
+button.danger { background: var(--danger); color: #fff; border-color: #b91c1c; }
+
+/* Estados */
+.empty {
+  background: #0b1626; border: 1px dashed var(--border);
+  border-radius: 12px; padding: 14px; text-align: center; color: var(--muted);
+}
+.hidden { display: none !important; }
+
+/* Vista realtime */
+.rt-layout { display: grid; grid-template-columns: 1fr; gap: 18px; }
+.grid-wrap { min-width: 0; }
+.side { display: grid; gap: 10px; align-content: start; }
+
+@media (min-width: 980px) {
+  .rt-layout { grid-template-columns: 2fr 1fr; }
+}
+
+/* Skeleton de carga */
+.skeleton-grid {
+  height: 160px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: linear-gradient(90deg, #0b1626 25%, #0f1f35 50%, #0b1626 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.2s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Toasts */
+.toast-container {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 9999;
+}
+
+.toast {
+  min-width: 240px;
+  max-width: 360px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  background: var(--card);
+  color: var(--fg);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  animation: slideIn .2s ease-out;
+}
+
+.toast.success {
+  border-color: #14532d;
+  background: linear-gradient(180deg, #052e16, #064e3b);
+}
+
+.toast.error {
+  border-color: #7f1d1d;
+  background: linear-gradient(180deg, #450a0a, #7f1d1d);
+}
+
+.toast.info {
+  border-color: #1e3a8a;
+  background: linear-gradient(180deg, #0b1228, #0b1f3a);
+}
+
+.toast.hide {
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: transform .2s ease, opacity .2s ease;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
