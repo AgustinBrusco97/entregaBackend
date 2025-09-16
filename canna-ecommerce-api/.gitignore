@@ -3,3 +3,11 @@ node_modules/
 *.log
 .DS_Store
 Thumbs.db
+
+# Windows device files
+NUL
+CON
+PRN
+AUX
+COM1
+LPT1
