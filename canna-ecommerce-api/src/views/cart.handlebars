@@ -1,0 +1,71 @@
+<a href="/products">← Seguir comprando</a>
+<section class="hero">
+  <h1>Tu carrito</h1>
+  <p class="muted">Productos seleccionados</p>
+</section>
+
+{{#if cart.products.length}}
+  <section class="product-grid">
+    {{#each cart.products}}
+      <article class="card">
+        <div class="thumb">
+          {{#if this.product.thumbnails.[0]}}
+            <img src="{{this.product.thumbnails.[0]}}" alt="" onerror="this.outerHTML='<div class=&quot;placeholder&quot;>{{this.product.title.[0]}}</div>'">
+          {{else}}
+            <div class="placeholder">{{this.product.title.[0]}}</div>
+          {{/if}}
+          <span class="badge">{{this.product.category}}</span>
+        </div>
+        <div class="card-body">
+          <h3 class="title">{{this.product.title}}</h3>
+          <div class="meta">
+            <span class="price">$ {{this.product.price}}</span>
+            <span class="stock">Cant: {{this.quantity}}</span>
+          </div>
+
+          <div class="actions">
+            <input class="qty" type="number" min="1" value="{{this.quantity}}" data-pid="{{this.product._id}}" style="max-width:120px;">
+            <button class="upd" data-pid="{{this.product._id}}">Actualizar</button>
+            <button class="danger rm" data-pid="{{this.product._id}}">Eliminar</button>
+          </div>
+        </div>
+      </article>
+    {{/each}}
+  </section>
+
+  <div class="actions" style="margin-top:12px;">
+    <button id="clear" class="danger">Vaciar carrito</button>
+  </div>
+{{else}}
+  <p class="empty">Tu carrito está vacío</p>
+{{/if}}
+
+<script>
+  const cid = "{{cart._id}}";
+
+  document.querySelectorAll(".rm").forEach(b=>{
+    b.onclick = async ()=>{
+      await fetch(`/api/carts/${cid}/product/${b.dataset.pid}`, { method: "DELETE" });
+      location.reload();
+    };
+  });
+
+  document.querySelectorAll(".upd").forEach(b=>{
+    b.onclick = async ()=>{
+      const input = document.querySelector(\`.qty[data-pid="${b.dataset.pid}"]\`);
+      await fetch(`/api/carts/${cid}/product/${b.dataset.pid}`, {
+        method:"PUT", headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify({ quantity: Number(input.value) })
+      });
+      location.reload();
+    };
+  });
+
+  const clearBtn = document.getElementById("clear");
+  if (clearBtn) {
+    clearBtn.onclick = async ()=>{
+      await fetch(`/api/carts/${cid}`, { method:"DELETE" });
+      location.reload();
+    };
+  }
+</script>

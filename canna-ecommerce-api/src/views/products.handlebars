@@ -1,0 +1,90 @@
+<section class="hero">
+  <h1>Catálogo</h1>
+  <p class="muted">Explorá nuestros productos</p>
+</section>
+
+<form id="filters" class="toolbar" method="GET" action="/products">
+  <div class="chips">
+    <button class="chip {{#unless query}}{{#unless (eq query "all")}}active{{/unless}}{{/unless}}" name="query" value="">Todos</button>
+    <button class="chip {{#if (eq query "category:flowers")}}active{{/if}}" name="query" value="category:flowers">Flowers</button>
+    <button class="chip {{#if (eq query "category:extracts")}}active{{/if}}" name="query" value="category:extracts">Extracts</button>
+    <button class="chip {{#if (eq query "category:edibles")}}active{{/if}}" name="query" value="category:edibles">Edibles</button>
+    <button class="chip {{#if (eq query "category:accessories")}}active{{/if}}" name="query" value="category:accessories">Accessories</button>
+  </div>
+
+  <input id="search" class="search" name="queryText" placeholder="Buscar productos..."
+         value="{{queryText}}" />
+
+  <select name="sort" style="max-width:160px">
+    <option value="" {{#unless sort}}selected{{/unless}}>Sin orden</option>
+    <option value="asc"  {{#if (eq sort "asc")}}selected{{/if}}>Precio ↑</option>
+    <option value="desc" {{#if (eq sort "desc")}}selected{{/if}}>Precio ↓</option>
+  </select>
+
+  <select name="limit" style="max-width:120px">
+    <option value="6"  {{#if (eq limit 6)}}selected{{/if}}>6</option>
+    <option value="10" {{#if (eq limit 10)}}selected{{/if}}>10</option>
+    <option value="16" {{#if (eq limit 16)}}selected{{/if}}>16</option>
+    <option value="24" {{#if (eq limit 24)}}selected{{/if}}>24</option>
+  </select>
+
+  <button type="submit">Aplicar</button>
+</form>
+
+<section class="product-grid" id="catalog-grid">
+  {{#if payload.length}}
+    {{#each payload}}
+      <article class="card" data-title="{{title}}" data-category="{{category}}">
+        <div class="thumb">
+          {{#if thumbnails.[0]}}
+            <img src="{{thumbnails.[0]}}" alt="" onerror="this.outerHTML='<div class=&quot;placeholder&quot;>{{title.[0]}}</div>'">
+          {{else}}
+            <div class="placeholder">{{title.[0]}}</div>
+          {{/if}}
+          <span class="badge">{{category}}</span>
+        </div>
+        <div class="card-body">
+          <h3 class="title">{{title}}</h3>
+          <p class="desc">{{description}}</p>
+          <div class="meta">
+            <span class="price">${{price}}</span>
+            <span class="stock">Stock: {{stock}}</span>
+          </div>
+          <div class="actions">
+            <a href="/products/{{_id}}">Ver detalle</a>
+            <button class="add-to-cart" data-pid="{{_id}}">Agregar</button>
+          </div>
+        </div>
+      </article>
+    {{/each}}
+  {{else}}
+    <p class="empty">No hay productos</p>
+  {{/if}}
+</section>
+
+<nav class="toolbar" style="justify-content:center">
+  {{#if hasPrevPage}} <a href="{{prevLink}}">« Anterior</a> {{/if}}
+  <span class="muted">Página {{page}} de {{totalPages}}</span>
+  {{#if hasNextPage}} <a href="{{nextLink}}">Siguiente »</a> {{/if}}
+</nav>
+
+<script>
+  // Permite combinar chips de categoría con búsqueda por texto
+  const form = document.getElementById('filters');
+  const search = document.getElementById('search');
+  // Si el user escribe texto, lo mandamos como ?query=<texto> y no como category:
+  form.addEventListener('submit', (e) => {
+    if (search && search.value.trim()) {
+      const url = new URL(window.location.href);
+      url.searchParams.set('query', search.value.trim());
+      const sort = form.querySelector('select[name="sort"]').value;
+      const limit = form.querySelector('select[name="limit"]').value;
+      if (sort) url.searchParams.set('sort', sort);
+      if (limit) url.searchParams.set('limit', limit);
+      window.location.href = url.toString();
+      e.preventDefault();
+    }
+  });
+</script>
+
+<script src="/js/catalog.js"></script>

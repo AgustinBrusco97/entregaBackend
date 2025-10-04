@@ -1,272 +1,266 @@
-Canna E-commerce API — Handlebars + WebSockets (Tiempo Real)
+Canna E-commerce API — Entrega FINAL (Backend I)
+================================================
 
-Plataforma educativa de e-commerce con Express, Handlebars y Socket.IO.
-Incluye vistas server-side render, una vista en tiempo real que refleja creación/eliminación de productos al instante, y una API REST para Products y Carts.
+API REST + Vistas con Node.js / Express / Handlebars / Socket.IO / MongoDB Atlas (Mongoose).
+Incluye paginación + filtros + orden, carritos con populate, tiempo real, scripts de seed y migración y colección Postman para pruebas.
 
-✨ Features
+------------------------------------------------
+INSTALACIÓN Y EJECUCIÓN
+------------------------------------------------
 
-Motor de plantillas: express-handlebars (SSR).
+Prerrequisitos
+- Node.js 18+ / npm
+- Cuenta gratuita en MongoDB Atlas
+- (Opcional) Postman para importar la colección
 
-Socket.IO: actualización automática en /realtimeproducts ante altas/bajas.
+Clonar e instalar
+1) git clone <url-de-tu-repo>
+2) cd canna-ecommerce-api
+3) npm install
 
-Emit desde HTTP: los endpoints POST/PUT/DELETE notifican products:changed.
+Variables de entorno (.env)
+PORT=8080
+NODE_ENV=development
+MONGO_URI="mongodb+srv://<user>:<pass>@<cluster>.mongodb.net/canna"
+# (Opcional) Forzar un carrito “demo” para el navbar y vistas
+DEMO_CART_ID=""
 
-Vista catálogo con tarjetas, imágenes, precio, stock, descripción.
+Nota: si dejás DEMO_CART_ID vacío, el servidor crea un carrito al vuelo y lo reutiliza en todas las vistas.
 
-Filtros por categoría y buscador con debounce.
+Scripts útiles
+- Desarrollo con hot-reload: npm run dev
+- Producción: npm start
+- Semillas FS legacy (útil para pruebas): npm run seed  /  npm run reseed
+- Migrar productos FS → MongoDB Atlas: npm run migrate
 
-Toasts de éxito/error en realtime.
+Servidor por defecto: http://localhost:8080
 
-Seed de datos (opcional) y modo demo.
 
-Logging y manejo de errores global.
+------------------------------------------------
+ESTRUCTURA DEL PROYECTO
+------------------------------------------------
 
-🧱 Stack
-
-Node.js, Express
-
-Socket.IO
-
-express-handlebars
-
-(Opcional) morgan/helmet/compression/rate-limit
-
-📁 Estructura
 canna-ecommerce-api/
-├─ app.js
-├─ index.js
-├─ package.json
-├─ config/
-│  ├─ config.js
-│  └─ environment.js
-├─ data/
-│  ├─ products.json
-│  └─ carts.json
-├─ public/
-│  ├─ css/
-│  │  └─ styles.css
-│  └─ js/
-│     ├─ catalog.js
-│     └─ realtime.js
-├─ scripts/
-│  └─ seed.js
-└─ src/
-   ├─ routes/
-   │  ├─ products.routes.js
-   │  ├─ carts.routes.js
-   │  └─ views.router.js
-   ├─ controllers/
-   │  └─ products.controller.js
-   ├─ services/
-   │  ├─ products.service.js
-   │  └─ carts.service.js
-   ├─ managers/
-   │  └─ ProductManager.js (opcional)
-   └─ views/
-      ├─ layouts/
-      │  └─ main.handlebars
-      ├─ home.handlebars
-      └─ realTimeProducts.handlebars
-
-⚙️ Requisitos
-
-Node.js 18+ (recomendado 20+)
-
-npm
-
-🚀 Instalación y ejecución
-# 1) Instalar dependencias
-npm install
-
-# 2) (Opcional) Sembrar datos
-npm run seed            # crea datos si no existen
-npm run seed:force      # sobrescribe datos
-
-# 3) Iniciar
-npm run dev             # con nodemon (si está configurado)
-# o
-npm start               # node index.js
-
-
-Variables de entorno (en config/environment.js):
-
-require('dotenv').config();
-
-module.exports = {
-  PORT: Number(process.env.PORT) || 8080,
-  DEMO_MODE: process.env.DEMO_MODE === 'true',
-  SEED_ON_START: process.env.SEED_ON_START === 'true'
-};
+├── app.js
+├── index.js
+├── package.json
+├── nodemon.json
+├── .env
+├── README.md
+├── Cannabis_API.postman_collection.json
+│
+├── config/
+│   ├── config.js
+│   └── environment.js
+│
+├── data/                   # FS legacy (para seeds de prueba)
+│   ├── carts.json
+│   └── products.json
+│
+├── public/
+│   ├── css/
+│   │   └── styles.css      # UI oscura, cards, chips, toasts, etc.
+│   └── js/
+│       ├── catalog.js
+│       └── realtime.js
+│
+├── scripts/
+│   ├── seed.js
+│   └── migrate.fs.to.mongo.js
+│
+└── src/
+    ├── controllers/
+    │   ├── carts.controller.js
+    │   └── products.controller.js   # maneja 400 (validación) y 409 (duplicados)
+    │
+    ├── dao/
+    │   ├── mongo.js                 # conexión Mongoose
+    │   ├── products.dao.js
+    │   ├── carts.dao.js
+    │   └── models/
+    │       ├── product.model.js
+    │       └── cart.model.js        # ref a Product + populate
+    │
+    ├── routes/
+    │   ├── products.routes.js       # /api/products
+    │   ├── carts.routes.js          # /api/carts (+ endpoints extra)
+    │   └── views.router.js          # /, /products, /products/:pid, /carts/:cid, /realtimeproducts
+    │
+    ├── services/
+    │   ├── products.service.js      # paginación, filtros, sort, formato “consigna”
+    │   └── carts.service.js         # add, update qty, remove, replace, clear, populate
+    │
+    └── views/
+        ├── layouts/
+        │   └── main.handlebars
+        ├── partials/
+        │   ├── header.handlebars
+        │   ├── navbar.handlebars    # ícono de carrito + badge de cantidad
+        │   └── footer.handlebars
+        ├── home.handlebars
+        ├── products.handlebars      # catálogo con paginación/filtros/orden
+        ├── product.handlebars       # detalle + “agregar al carrito”
+        ├── cart.handlebars          # vista del carrito (populate)
+        └── realTimeProducts.handlebars
 
 
-Sugerencia: para desarrollo, podés dejar SEED_ON_START=true al principio y luego ponerlo en false.
+------------------------------------------------
+API — ENDPOINTS
+------------------------------------------------
 
-🧪 Rutas principales
-Vistas (SSR)
+Productos /api/products
+- GET /                 Lista paginada con filtros y orden
+- GET /:pid             Obtiene un producto por ID
+- POST /                Crea producto (400 validación / 409 duplicado code)
+- PUT /:pid             Actualiza producto
+- DELETE /:pid          Elimina producto
 
-GET / → Catálogo (Handlebars, con filtros y buscador).
+Query soportada en GET /api/products
+- limit (default 10, máx 50)
+- page (default 1)
+- sort=asc|desc (por precio)
+- query:
+  - category:flowers|extracts|edibles|accessories
+  - status:true|false
 
-GET /realtimeproducts → Vista en tiempo real (Socket.IO).
+Formato de respuesta (consigna):
+{
+  "status": "success",
+  "payload": [ ... ],
+  "totalPages": 5,
+  "prevPage": 1,
+  "nextPage": 3,
+  "page": 2,
+  "hasPrevPage": true,
+  "hasNextPage": true,
+  "prevLink": "http://localhost:8080/api/products?...&page=1",
+  "nextLink": "http://localhost:8080/api/products?...&page=3"
+}
 
-Salud
+Carritos /api/carts
+- POST /                                 Crea carrito
+- GET /:cid                              Obtiene carrito con populate
+- POST /:cid/product/:pid                Agrega un producto
+- PUT /:cid/products/:pid                Actualiza SOLO cantidad
+- PUT /:cid                              Reemplaza todo el arreglo de productos
+- DELETE /:cid/products/:pid             Elimina un producto
+- DELETE /:cid                           Vacía el carrito
 
-GET /health
-
-API Products
-
-GET /api/products
-
-GET /api/products/:pid
-
-POST /api/products
-
-PUT /api/products/:pid
-
-DELETE /api/products/:pid
-
-API Carts
-
-POST /api/carts
-
-GET /api/carts/:cid
-
-POST /api/carts/:cid/product/:pid
-
-🔌 WebSockets (eventos)
-
-Servidor (Socket.IO montado en index.js):
-
-Emisiones de sistema
-
-users:count — total de conexiones activas
-
-products:changed — notifica a todos que la lista cambió
-
-Eventos de cliente
-
-ws:createProduct — payload de producto; ack { ok, error?, id? }
-
-ws:deleteProduct — id de producto; ack { ok, error?, id? }
-
-Errores
-
-ws:error — mensaje de error legible
-
-Cliente (public/js/realtime.js):
-
-Escucha products:changed y refresca la grilla.
-
-Muestra toasts en create/delete con ack.
-
-🛠️ Emit desde HTTP (consigna)
-
-Los endpoints HTTP de productos emiten products:changed tras crear/actualizar/eliminar:
-
-// dentro del controller
-const io = req.app.get('io'); .
-io.emit('products:changed');
+Nota populate: cada entrada viene como { product: {…}, quantity: n } con los datos completos del producto.
 
 
-index.js agrega app.set('io', io) al montar Socket.IO para leerlo desde los handlers HTTP.
+------------------------------------------------
+VISTAS (HANDLEBARS)
+------------------------------------------------
 
-🧪 Ejemplos (curl)
+- /products: grilla con chips de categoría, buscador simple, orden por precio y paginación.
+- /products/:pid: detalle del producto + botón “agregar al carrito” (usa cartId inyectado).
+- /carts/:cid: lista SOLO los productos de ese carrito (populate) con subtotales y total.
+- /realtimeproducts: alta/baja en tiempo real vía Socket.IO.
 
-Crear producto:
+El navbar muestra un badge con la cantidad del carrito y enlaza a /carts/{{cartId}}.
+Si faltara un cartId, el servidor crea uno y lo expone en res.locals.cartId.
 
+
+------------------------------------------------
+VALIDACIONES Y ERRORES
+------------------------------------------------
+
+Productos
+- 409 si code está duplicado (índice único Mongoose).
+- 400 por errores de validación (title, code, price, category, etc.).
+
+Carritos
+- 404 si :cid o :pid no existen.
+- 400 si quantity inválida u operación no permitida.
+
+Middleware global devuelve JSON:
+{ "status": "error", "message": "..." }
+
+
+------------------------------------------------
+TIEMPO REAL (SOCKET.IO)
+------------------------------------------------
+
+- Canal de creación y eliminación de productos en vivo.
+- Indicador de usuarios conectados.
+- Auto-refresh del catálogo en /realtimeproducts sin recargar.
+
+
+------------------------------------------------
+TESTING RÁPIDO
+------------------------------------------------
+
+Postman
+- Importar: Canna_Ecommerce_Postman_Entrega_Final.json
+- Variables: baseUrl, CID, PID1, PID2, etc.
+- Requests: productos (CRUD + filtros), carritos (CRUD + extra), vistas (GET /products, /carts/:cid, /realtimeproducts).
+
+Curl (ejemplos)
+1) Listado paginado y filtrado
+curl "http://localhost:8080/api/products?limit=5&page=1&sort=asc&query=category:flowers"
+
+2) Crear producto (usar code único)
 curl -X POST http://localhost:8080/api/products \
   -H "Content-Type: application/json" \
-  -d '{
-    "title": "Galleta loca",
-    "description": "Cookie con extracto de THC",
-    "code": "EDB-COOKIE-002",
-    "price": 1200,
-    "stock": 50,
-    "category": "edibles",
-    "status": true,
-    "specs": { "thcMg": 10, "units": 1 },
-    "thumbnails": ["https://picsum.photos/seed/cookie/640/480"]
-  }'
+  -d '{"title":"OG Kush Premium","description":"...","code":"OGK-POST-001","price":4500,"category":"flowers","stock":25,"status":true}'
 
 
-Eliminar producto:
+------------------------------------------------
+SCRIPTS DE DATOS
+------------------------------------------------
 
-curl -X DELETE http://localhost:8080/api/products/<ID>
-
-
-Abrí dos pestañas en http://localhost:8080/realtimeproducts: al crear/eliminar, ambas se actualizan automáticamente.
-
-📦 Seed de datos
-
-Correr manual:
-
-npm run seed
-npm run seed:force
+- npm run seed / npm run reseed: escribe FS legacy (/data/*.json).
+- npm run migrate: toma los productos del seed y los inserta en MongoDB Atlas (genera code si falta, limpia duplicados, etc.).
 
 
-Automático al iniciar: SEED_ON_START=true en .env (o en config/environment.js).
+------------------------------------------------
+CHECKLIST DE LA CONSIGNA
+------------------------------------------------
 
-Archivos por defecto: data/products.json y data/carts.json.
-
-🧩 Configuración
-
-config/config.js expone rutas y opciones:
-
-productsFile, cartsFile
-
-validCategories: ['flowers', 'extracts', 'edibles', 'accessories']
-
-pagination: { defaultLimit, maxLimit }
-
-Recomendado: calcular rutas absolutas con path.join para evitar problemas de cwd.
-
-🧯 Errores y logs
-
-Logger simple por request (fecha, método, url).
-
-Middleware de errores global: mapea mensajes comunes a 400/404/500 y en development incluye stack.
-
-🎨 UI (resumen)
-
-Catálogo (/): tarjetas con imagen/fallback, badge de categoría, precio con gradiente, stock, SKU, filtros por categoría + buscador (debounce).
-
-Tiempo real (/realtimeproducts): grilla + formularios de crear/eliminar, contador de conectados, toasts de feedback.
-
-CSS en public/css/styles.css. JS de catálogo en public/js/catalog.js. JS de realtime en public/js/realtime.js.
-
-🔐 Producción (sugerencias)
-npm i helmet compression express-rate-limit morgan
+- Mongo Atlas como persistencia principal  ✔
+- Productos con filtros (categoría/estado), paginación, orden por precio y formato de respuesta especificado  ✔
+- Carritos: endpoints extra (PUT cantidad, DELETE item, PUT replace, DELETE clear)  ✔
+- Populate al traer un carrito  ✔
+- Vistas:
+  - /products con paginación/filtros/orden  ✔
+  - /products/:pid o “agregar directo”  ✔
+  - /carts/:cid con productos del carrito  ✔
+  - /realtimeproducts con websockets  ✔
+- Colección Postman  ✔
 
 
-helmet() y compression() en prod.
+------------------------------------------------
+NOTAS TÉCNICAS
+------------------------------------------------
 
-rateLimit para /api/*.
+- .lean() en queries para compatibilidad con Handlebars y mejor rendimiento.
+- Helpers Handlebars: eq, year.
+- CSS: tema oscuro, chips, cards, toasts y badge del carrito.
+- Estructura en capas: routes → controllers → services → dao/models.
+- Logs mínimos en consola + middleware de errores consistente.
 
-morgan('combined') para logs en prod.
 
-CORS restringido a tu dominio.
+------------------------------------------------
+DESARROLLO
+------------------------------------------------
 
-✅ Checklist de la consigna
+Scripts NPM: dev, start, seed, reseed, migrate
+Dependencias clave: express, express-handlebars, mongoose, socket.io, dotenv, nodemon
+Convenciones: feat:, fix:, docs:, refactor:, chore: en commits
 
- Handlebars configurado y funcionando.
 
- Vista home.handlebars con lista de productos.
+------------------------------------------------
+ANEXOS
+------------------------------------------------
 
- Vista realTimeProducts.handlebars con WebSockets.
+- Colección Postman: Canna_Ecommerce_Postman_Entrega_Final.json
+- Estilos: public/css/styles.css
+- Vistas: src/views/*
+- Modelos: src/dao/models/*
 
- Server Socket.IO montado en index.js.
 
- Emit en POST/PUT/DELETE → products:changed.
-
- Actualización automática en tiempo real.
-
- Bonus: contador de conectados, toasts, filtros + búsqueda.
-
-🤝 Contribuir
-
-PRs y sugerencias bienvenidas. Asegurate de:
-
-Ejecutar npm test (si hay tests).
-
-Mantener estilos y linting.
-
-Describir claramente el cambio.
+------------------------------------------------
+CRÉDITOS
+------------------------------------------------
+Proyecto desarrollado por: Agustín Brusco

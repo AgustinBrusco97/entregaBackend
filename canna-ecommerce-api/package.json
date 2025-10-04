@@ -7,7 +7,8 @@
     "start": "node index.js",
     "dev": "nodemon index.js",
     "seed": "node scripts/seed.js",
-    "reseed": "node scripts/seed.js --force"
+    "reseed": "node scripts/seed.js --force",
+    "migrate": "node scripts/migrate.fs.to.mongo.js"
   },
   "keywords": [
     "cannabis",
@@ -19,8 +20,10 @@
   "author": "Tu Nombre",
   "license": "MIT",
   "dependencies": {
-    "dotenv": "^16.3.1",
-    "express": "^4.18.2"
+    "dotenv": "^16.6.1",
+    "express": "^4.18.2",
+    "mongodb": "^6.20.0",
+    "mongoose": "^8.19.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.10"

@@ -1,0 +1,31 @@
+<a href="/products">← Volver</a>
+
+<article class="card" style="margin-top:12px;">
+  <div class="thumb">
+    {{#if product.thumbnails.[0]}}
+      <img src="{{product.thumbnails.[0]}}" alt="" onerror="this.outerHTML='<div class=&quot;placeholder&quot;>{{product.title.[0]}}</div>'">
+    {{else}}
+      <div class="placeholder">{{product.title.[0]}}</div>
+    {{/if}}
+    <span class="badge">{{product.category}}</span>
+  </div>
+
+  <div class="card-body">
+    <h1 class="title" style="font-size:24px;">{{product.title}}</h1>
+    <p class="desc">{{product.description}}</p>
+    <div class="meta">
+      <span class="price">$ {{product.price}}</span>
+      <span class="stock">Stock: {{product.stock}}</span>
+    </div>
+    {{#if product.code}}
+      <code class="sku">{{product.code}}</code>
+    {{/if}}
+
+    <div class="actions">
+      <input id="qty" type="number" min="1" value="1" style="max-width:120px;">
+      <button class="add-to-cart" data-pid="{{product._id}}">Agregar</button>
+    </div>
+  </div>
+</article>
+
+<script src="/js/catalog.js"></script>

@@ -1,44 +1,57 @@
 <section class="hero">
-  <h1>Productos en tiempo real</h1>
-  <p class="muted">Creá y eliminá productos, la grilla se actualiza sola</p>
+  <h1>Catálogo en tiempo real</h1>
+  <p class="muted">Alta y baja de productos con WebSockets</p>
 </section>
 
-<div class="toolbar">
-  <span class="chip">Conectados: <strong id="online">0</strong></span>
-</div>
-
 <div class="rt-layout">
-  <section class="grid-wrap">
-    <div id="rt-grid" class="product-grid"></div>
-  </section>
+  <div class="grid-wrap">
+    <section class="product-grid" id="rt-grid">
+      {{#if products.length}}
+        {{#each products}}
+          <article class="card" data-id="{{_id}}">
+            <div class="thumb">
+              {{#if thumbnails.[0]}}
+                <img src="{{thumbnails.[0]}}" alt="" onerror="this.outerHTML='<div class=&quot;placeholder&quot;>{{title.[0]}}</div>'">
+              {{else}}
+                <div class="placeholder">{{title.[0]}}</div>
+              {{/if}}
+              <span class="badge">{{category}}</span>
+            </div>
+            <div class="card-body">
+              <h3 class="title">{{title}}</h3>
+              <p class="desc">{{description}}</p>
+              <div class="meta">
+                <span class="price">$ {{price}}</span>
+                <span class="stock">Stock: {{stock}}</span>
+              </div>
+              <code class="sku">{{code}}</code>
+              <div class="actions">
+                <button class="danger ws-delete" data-id="{{_id}}">Eliminar</button>
+              </div>
+            </div>
+          </article>
+        {{/each}}
+      {{else}}
+        <p class="empty">No hay productos</p>
+      {{/if}}
+    </section>
+  </div>
 
   <aside class="side">
-    <h3>Crear producto</h3>
-    <form id="ws-create-form" class="card form">
+    <form id="ws-create-form" class="form">
+      <h3 style="margin:0">Nuevo producto (WS)</h3>
       <input name="title" placeholder="Título" required />
-      <input name="description" placeholder="Descripción" required />
-      <input name="code" placeholder="Código (único)" required />
-      <input name="price" type="number" placeholder="Precio" required />
-      <input name="stock" type="number" placeholder="Stock" required />
-      <select name="category" required>
-        <option value="" disabled selected>Categoría</option>
-        <option value="flowers">flowers</option>
-        <option value="extracts">extracts</option>
-        <option value="edibles">edibles</option>
-        <option value="accessories">accessories</option>
-      </select>
-      <textarea name="specs" rows="3" placeholder='{"thcMg":10,"units":1}'></textarea>
-      <input name="thumbnails" placeholder="Thumbnails (URLs separadas por coma)" />
-      <button type="submit">Crear</button>
-    </form>
-
-    <h3>Eliminar producto</h3>
-    <form id="ws-delete-form" class="card form">
-      <input name="id" placeholder="ID del producto" required />
-      <button type="submit" class="danger">Eliminar</button>
+      <textarea name="description" placeholder="Descripción"></textarea>
+      <input name="price" type="number" min="0" step="0.01" placeholder="Precio" required />
+      <input name="category" placeholder="Categoría (flowers, extracts, edibles, accessories)" required />
+      <input name="stock" type="number" min="0" step="1" placeholder="Stock" required />
+      <input name="code" placeholder="Código único (opcional)" />
+      <input name="thumbnail" placeholder="Thumbnail URL (opcional)" />
+      <button type="submit">Crear (socket)</button>
     </form>
   </aside>
 </div>
 
+<!-- 👇 cliente socket.io + lógica -->
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/realtime.js"></script>

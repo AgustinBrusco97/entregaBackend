@@ -1,39 +1,30 @@
 const express = require('express');
-const CartsController = require('../controllers/carts.controller');
-
+const ctrl = require('../controllers/carts.controller');
 const router = express.Router();
-const cartsController = new CartsController();
 
 // POST /api/carts - Crear nuevo carrito
-router.post('/', (req, res, next) => {
-  cartsController.createCart(req, res, next);
-});
+router.post('/', ctrl.createCart);
 
-// GET /api/carts/:cid - Obtener carrito por ID con productos detallados
-router.get('/:cid', (req, res, next) => {
-  cartsController.getCartById(req, res, next);
-});
+// GET /api/carts/:cid - Obtener carrito con populate
+router.get('/:cid', ctrl.getCartById);
 
-// POST /api/carts/:cid/product/:pid - Agregar producto al carrito
-router.post('/:cid/product/:pid', (req, res, next) => {
-  cartsController.addProductToCart(req, res, next);
-});
+// POST /api/carts/:cid/product/:pid - Agregar producto
+router.post('/:cid/product/:pid', ctrl.addProductToCart);
 
-// DELETE /api/carts/:cid/product/:pid - Eliminar producto del carrito
-router.delete('/:cid/product/:pid', (req, res, next) => {
-  cartsController.removeProductFromCart(req, res, next);
-});
+// PUT /api/carts/:cid/product/:pid - Actualizar cantidad de un producto
+router.put('/:cid/product/:pid', ctrl.updateProductQuantity);
 
-// PUT /api/carts/:cid/product/:pid - Actualizar cantidad de producto en carrito
-router.put('/:cid/product/:pid', (req, res, next) => {
-  cartsController.updateProductQuantity(req, res, next);
-});
+// DELETE /api/carts/:cid/product/:pid - Eliminar un producto
+router.delete('/:cid/product/:pid', ctrl.removeProductFromCart);
+
+// PUT /api/carts/:cid - Reemplazar todos los productos del carrito
+router.put('/:cid', ctrl.updateAllProducts);
 
 // DELETE /api/carts/:cid - Vaciar carrito
-router.delete('/:cid', (req, res, next) => {
-  cartsController.clearCart(req, res, next);
-});
+router.delete('/:cid', ctrl.clearCart);
+
+// === Aliases en plural para cumplir la consigna literalmente ===
+router.put('/:cid/products/:pid', ctrl.updateProductQuantity);   // alias de PUT /:cid/product/:pid
+router.delete('/:cid/products/:pid', ctrl.removeProductFromCart); // alias de DELETE /:cid/product/:pid
 
 module.exports = router;
-
-

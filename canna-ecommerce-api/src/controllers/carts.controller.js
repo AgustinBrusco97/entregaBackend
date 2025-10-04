@@ -1,100 +1,66 @@
 const CartsService = require('../services/carts.service');
+const svc = new CartsService();
 
-class CartsController {
-  constructor() {
-    this.cartsService = new CartsService();
+exports.createCart = async (req, res, next) => {
+  try {
+    const cart = await svc.createCart();
+    res.status(201).json({ status: 'success', payload: cart });
+  } catch (err) {
+    next(err);
   }
+};
 
-  async createCart(req, res, next) {
-    try {
-      const cart = await this.cartsService.createCart();
-      res.status(201).json({
-        status: 'success',
-        payload: cart
-      });
-    } catch (error) {
-      next(error);
-    }
+exports.getCartById = async (req, res, next) => {
+  try {
+    const cart = await svc.getCartById(req.params.cid);
+    res.json({ status: 'success', payload: cart });
+  } catch (err) {
+    next(err);
   }
+};
 
-  async getCartById(req, res, next) {
-    try {
-      const { cid } = req.params;
-      const cart = await this.cartsService.getCartProducts(cid);
-      res.json({
-        status: 'success',
-        payload: cart
-      });
-    } catch (error) {
-      next(error);
-    }
+exports.addProductToCart = async (req, res, next) => {
+  try {
+    const cart = await svc.addProductToCart(req.params.cid, req.params.pid);
+    res.json({ status: 'success', payload: cart });
+  } catch (err) {
+    next(err);
   }
+};
 
-  async addProductToCart(req, res, next) {
-    try {
-      const { cid, pid } = req.params;
-      const cart = await this.cartsService.addProductToCart(cid, pid);
-      res.json({
-        status: 'success',
-        message: 'Producto agregado al carrito',
-        payload: cart
-      });
-    } catch (error) {
-      next(error);
-    }
+exports.updateProductQuantity = async (req, res, next) => {
+  try {
+    const { quantity } = req.body;
+    const cart = await svc.updateProductQuantity(req.params.cid, req.params.pid, quantity);
+    res.json({ status: 'success', payload: cart });
+  } catch (err) {
+    next(err);
   }
+};
 
-  async removeProductFromCart(req, res, next) {
-    try {
-      const { cid, pid } = req.params;
-      const cart = await this.cartsService.removeProductFromCart(cid, pid);
-      res.json({
-        status: 'success',
-        message: 'Producto eliminado del carrito',
-        payload: cart
-      });
-    } catch (error) {
-      next(error);
-    }
+exports.removeProductFromCart = async (req, res, next) => {
+  try {
+    const cart = await svc.removeProductFromCart(req.params.cid, req.params.pid);
+    res.json({ status: 'success', payload: cart });
+  } catch (err) {
+    next(err);
   }
+};
 
-  async updateProductQuantity(req, res, next) {
-    try {
-      const { cid, pid } = req.params;
-      const { quantity } = req.body;
-      
-      if (!quantity || typeof quantity !== 'number' || quantity < 0) {
-        return res.status(400).json({
-          status: 'error',
-          message: 'Cantidad debe ser un número mayor o igual a 0'
-        });
-      }
-
-      const cart = await this.cartsService.updateProductQuantity(cid, pid, quantity);
-      res.json({
-        status: 'success',
-        message: 'Cantidad actualizada',
-        payload: cart
-      });
-    } catch (error) {
-      next(error);
-    }
+exports.clearCart = async (req, res, next) => {
+  try {
+    const cart = await svc.clearCart(req.params.cid);
+    res.json({ status: 'success', payload: cart });
+  } catch (err) {
+    next(err);
   }
+};
 
-  async clearCart(req, res, next) {
-    try {
-      const { cid } = req.params;
-      const cart = await this.cartsService.clearCart(cid);
-      res.json({
-        status: 'success',
-        message: 'Carrito vaciado',
-        payload: cart
-      });
-    } catch (error) {
-      next(error);
-    }
+exports.updateAllProducts = async (req, res, next) => {
+  try {
+    const cart = await svc.updateAllProducts(req.params.cid, req.body.products);
+    res.json({ status: 'success', payload: cart });
+  } catch (err) {
+    next(err);
   }
-}
-
-module.exports = CartsController;
-
+};
