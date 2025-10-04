@@ -47,7 +47,7 @@ npm run migrate
 
 
 Servidor por defecto: http://localhost:8080
-
+```
 📁 Estructura del proyecto
 canna-ecommerce-api/
 ├── app.js
@@ -111,7 +111,7 @@ canna-ecommerce-api/
         ├── product.handlebars        # detalle + “agregar al carrito”
         ├── cart.handlebars           # vista del carrito (populate)
         └── realTimeProducts.handlebars
-
+```
 🔌 API — Endpoints
 Productos /api/products
 Método	Ruta	Descripción
