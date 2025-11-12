@@ -1,4 +1,4 @@
-🌿 Canna E-commerce API — Entrega FINAL (Backend I)
+🌿 Canna E-commerce API — Entrega  (Backend 2)
 
 API REST + Vistas con Node.js / Express / Handlebars / Socket.IO / MongoDB Atlas (Mongoose).
 Incluye paginación + filtros + orden, carritos con populate, tiempo real, scripts de seed y migración y colección Postman para pruebas.
